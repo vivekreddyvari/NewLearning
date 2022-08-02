@@ -25,3 +25,7 @@ for num, days in weekdays.items():
             print(day_num)
 
 print(weekdays[day_num], "subtract")
+
+l = [list, int, '', str]
+for obj in l:
+    print(callable(obj))
