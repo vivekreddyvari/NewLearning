@@ -151,3 +151,73 @@ d2[p1] = "Guido"
 
 print(ref_count(id(p1)), weakref.getweakrefcount(p1), "How many weak references does p1"
                                                       "as referred and using weak ref dict?")
+
+print(p1.__weakref__, "Python referencing Linked_List")
+print("check the reference number ", hex(id(p1)))
+print("How many key weak references does p1 has", list(d.keyrefs()))
+
+# Deletion one-only strong reference.
+del p1
+reference_count = ''
+if len(list(d.keyrefs())) == 0:
+    reference_count = 'Empty'
+print(f'How many key weak references does p1 has now, Lets check and p1 is {reference_count} and it is {list(d.keyrefs())}')
+
+
+class CodeTwoPerson:
+    def __init__(self, name):
+        self.name = name
+
+
+person1 = CodeTwoPerson("Person1")
+
+if hash(person1) != 0: print(f"Is the person1 hashable, {hash(person1)}")
+
+
+class CodeThreePerson:
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        return isinstance(other, CodeThreePerson) and self.name == other.name
+
+
+person3_I = CodeThreePerson("Fred")
+person3_II = CodeThreePerson("Fred")
+
+if person3_I == person3_II: print(f"yes Person3_I = person3_II is {person3_I == person3_II}")
+
+try:
+    hash(person3_I)
+except Exception as ex:
+    print(ex)
+
+
+class CodeFourPerson:
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        return isinstance(other, CodeFourPerson) and self.name == other.name
+
+    def __hash__(self):
+        return hash(self.name)
+
+person4_I = CodeFourPerson("Fred")
+person4_II = CodeFourPerson("Fred")
+
+if person4_I == person4_II: print(f"yes Person4_I = person4_II is {person4_I == person4_II}")
+
+try:
+    hash(person4_I)
+except Exception as ex:
+    print(ex)
+
+d[person4_I] = "Test"
+if list(d.keyrefs()) != ' ': print(f"{list(d.keyrefs())}")
+
+del person4_I
+
+if len(list(d.keyrefs())) != 0: print(f"{list(d.keyrefs())}")
+
+
