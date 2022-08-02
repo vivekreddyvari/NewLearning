@@ -1,4 +1,5 @@
 import ctypes
+import weakref
 
 # STrong and WEak Reference
 
@@ -82,7 +83,7 @@ class CodeOnePerson:
 p1 = CodeOnePerson('Guido')
 p2 = p1
 
-print(f"is p1 a p2:{p1 is p2}, yes id(p1) {id(p1)}= id(p2) {id(p2)} ")
+print(f"is p1 a p2?:{p1 is p2}, yes id(p1)= {id(p1)} and id(p2)= {id(p2)} ")
 print(ref_count(id(p1)))
 
 del p2
@@ -91,5 +92,62 @@ p1_id = id(p1)
 print(ref_count(p1_id))
 
 del p1
-print(p1_id)
+print(ref_count(p1_id))
+print(p1_id, "is a garbage collector reference keeps changes ")
 
+p1_I = CodeOnePerson("Van Russum")
+p1_id_I = id(p1_I)
+
+print(ref_count(p1_id_I), "Before referencing")
+
+p2_I = p1_I
+print(ref_count(p1_id_I), "After referencing")
+
+weak1_I = weakref.ref(p1_I)
+print(ref_count(p1_id_I), "Checking the weak reference " )
+
+print(weak1_I, "The weak reference ")
+print(hex(p1_id_I), "the memory address of weak reference")
+
+print(weak1_I(), "Weak reference ")
+
+
+
+del p1_I
+print(ref_count(p1_id_I), "still there ?")
+
+print(weak1_I, "check it is still alive")
+
+del p2_I
+print(ref_count(p1_id_I), "still there ?")
+print(weak1_I, "check it is still alive? ")
+
+l = [1, 2, 3]
+try:
+    w = weakref.ref(l)
+except TypeError as ex:
+    print(ex)
+
+# Data descriptors as keys, as it will not stop from being destroyed.
+p1 = CodeOnePerson("Guido")
+
+d = weakref.WeakKeyDictionary()
+
+print(ref_count(id(p1)), "How many Weak references")
+
+n = {p1: "Guido"}
+print(ref_count(id(p1)), "Checking how references the p1 has")
+
+# Del
+del n
+print(ref_count(id(p1)), "Now how many weak references does `p1` has?")
+
+d[p1] = "Guido"
+print(ref_count(id(p1)), "after using weak reference dictionary, and `p1` has?")
+print(weakref.getweakrefcount(p1), "To know how many weak reference it has")
+
+d2 = weakref.WeakKeyDictionary()
+d2[p1] = "Guido"
+
+print(ref_count(id(p1)), weakref.getweakrefcount(p1), "How many weak references does p1"
+                                                      "as referred and using weak ref dict?")

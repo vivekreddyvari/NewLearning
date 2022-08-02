@@ -1,3 +1,5 @@
+from time import time, sleep
+
 
 class Classy:
     def method(self, par):
@@ -76,5 +78,11 @@ d = Emoji('dog')
 print(d.dog())
 h = Emoji('horse')
 print(h.horse())
+end = time()
+sleep(3)
+m, s = divmod(time() - end, 60)
+h, m = divmod(m, 60)
+time_str = "%02d:%02d:%02d" % (h, m, s)
+print(time_str)
 
 
