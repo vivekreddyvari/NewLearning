@@ -150,8 +150,8 @@ def main():
         mapped_data = data_mapping(grouping_data, mapping_file_values)
         catalog_structure_data = catalog_structure(mapped_data)
 
-        with open("/Users/vivekreddyvari/opt/anaconda/NewLearning/FashionCloud/app/output/structure.json", "w") as json_file:
-            json.dump(catalog_structure_data, json_file)
+        with open("/Users/vivekreddyvari/opt/anaconda/NewLearning/FashionCloud/app/output/structure.json", "w") \
+                as json_file : json.dump(catalog_structure_data, json_file)
 
 
 if __name__ == '__main__':
