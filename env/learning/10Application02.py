@@ -118,5 +118,154 @@ class PolygonAppend:
     def append(self, pt):
         if not isinstance(pt, Point2D):
             raise ValueError('Can only append Point2D instances')
-            PolygonAppend.vertices
-            max_length = type(self).vertices.max_length
+        max_length = type(self).vertices.max_length
+        if max_length is not None and len(self.vertices) >= max_length:
+            raise ValueError(f"Vertices length is at max ({max_length})")
+        self.vertices.append(pt)
+
+
+polyTwo = PolygonAppend(Point2D(0, 0), Point2D(0, 1), Point2D(1, 0))
+
+print(polyTwo.vertices)
+polyTwo.append(Point2D(10, 10))
+print(polyTwo.vertices)
+
+
+# inherit Polygon Method
+class Triangle(PolygonAppend):
+    # vertices with min and max lengths
+    vertices = Point2DSequence(min_length=3, max_length=3)
+
+class Rectangle(PolygonAppend):
+    # vertices with min and max lengths
+    vertices = Point2DSequence(min_length=4, max_length=4)
+
+# checking error if any other vertices is added to the polygon
+# t = Triangle(Point2D(0, 0), Point2D(1, 1), Point2D(3, 3), Point2D(10, 10))
+
+
+class PolygonFinal:
+    vertices = Point2DSequence(min_length=3)
+
+    def __init__(self, *vertices):
+        self.vertices = vertices
+
+    def append(self, pt):
+        if not isinstance(pt, Point2D):
+            raise ValueError('Can only append Point2D instances')
+        max_length = type(self).vertices.max_length
+        if max_length is not None and len(self.vertices) >= max_length:
+            raise ValueError(f"Vertices length is at max ({max_length})")
+        self.vertices.append(pt)
+
+    # For finding how many vertices are there
+    def __len__(self):
+        return len(self.vertices)
+
+    # for slicing vertices
+    def __getitem__(self, idx):
+        return self.vertices[idx]
+
+polyThree = PolygonFinal(Point2D(0, 0), Point2D(0, 1), Point2D(1, 0))
+
+print(f"Length of Polygon={len(polyThree)}")
+print(polyThree.vertices)
+print(f"Which is 2nd Vertice={polyThree[1]}")
+print(f"slicing {polyThree[1:3]}")
+
+
+class PolygonFinalVersion:
+    vertices = Point2DSequence(min_length=3)
+
+    def __init__(self, *vertices):
+        self.vertices = vertices
+
+    def append(self, pt):
+        if not isinstance(pt, Point2D):
+            raise ValueError('Can only append Point2D instances')
+        max_length = type(self).vertices.max_length
+        if max_length is not None and len(self.vertices) >= max_length:
+            raise ValueError(f"Vertices length is at max ({max_length})")
+        self.vertices.append(pt)
+
+    # For finding how many vertices are there
+    def __len__(self):
+        return len(self.vertices)
+
+    # for slicing vertices
+    def __getitem__(self, idx):
+        return self.vertices[idx]
+
+    # inplace addition
+    def __iadd__(self, pt):
+        self.append(pt)
+        return self
+
+    def __contains__(self, pt):
+        return pt in self.vertices
+
+
+polyFour = PolygonFinalVersion(Point2D(0, 0), Point2D(0, 1), Point2D(1, 0))
+
+print(list(polyFour))
+
+polyFour += Point2D(10, 11)
+
+print(polyFour.vertices)
+print(Point2D(0, 0) in polyFour.vertices, end='\n\n')
+
+
+class Point2D:
+    x = Int(min_value=0, max_value=800)
+    y = Int(min_value=0, max_value=600)
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __repr__(self):
+        return f'Point2D(x={self.x}, y={self.y})'
+
+    def __str__(self):
+        return f"{self.x}, {self.y}"
+
+    def __eq__(self, other):
+        return isinstance(other, Point2D) and self.x == other.x and self.y == other.y
+
+    def __hash__(self):
+        return hash(self.x, self.y)
+
+
+class Polygon:
+    vertices = Point2DSequence(min_length=3)
+
+    def __init__(self, *vertices):
+        self.vertices = vertices
+
+    def append(self, pt):
+        if not isinstance(pt, Point2D):
+            raise ValueError('Can only append Point2D instances')
+        max_length = type(self).vertices.max_length
+        if max_length is not None and len(self.vertices) >= max_length:
+            raise ValueError(f"Vertices length is at max ({max_length})")
+        self.vertices.append(pt)
+
+    # For finding how many vertices are there
+    def __len__(self):
+        return len(self.vertices)
+
+    # for slicing vertices
+    def __getitem__(self, idx):
+        return self.vertices[idx]
+
+    # inplace addition
+    def __iadd__(self, pt):
+        self.append(pt)
+        return self
+
+    def __contains__(self, pt):
+        return pt in self.vertices
+
+
+polyFive = Polygon(Point2D(0, 0), Point2D(0, 1), Point2D(1, 0))
+print(Point2D(0, 0) in polyFive.vertices)
