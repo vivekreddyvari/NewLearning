@@ -29,3 +29,12 @@ print(weekdays[day_num], "subtract")
 l = [list, int, '', str]
 for obj in l:
     print(callable(obj))
+
+from typing import List, Dict, Tuple, Union
+
+def load_data() -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
+    price_values = []
+    mapping_values = []
+    return (price_values, mapping_values)
+
+l = load_data()
