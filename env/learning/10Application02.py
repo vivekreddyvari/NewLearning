@@ -1,5 +1,6 @@
 import numbers
-
+import collections
+from collections import abc
 
 # Polygon - Vertices - 2D.
 class Int:
@@ -35,7 +36,7 @@ class Point2D:
         self.y = y
 
     def __repr__(self):
-        return f'Point2D(x={self.x}, y={self.y}'
+        return f'Point2D(x={self.x}, y={self.y})'
 
     def __str__(self):
         return f"{self.x}, {self.y}"
@@ -43,13 +44,79 @@ class Point2D:
 
 point_2_d = Point2D(0, 10)
 
-str(point_2_d)
+print(f"Testing STRING_TYPE: {str(point_2_d)}")
 
-repr(point_2_d)
+print(f" Testing REPRESENTATION: {repr(point_2_d)}")
 
 try:
     point_2_d = Point2D(0, 800)
 except ValueError as ex:
     print(ex)
 
+# using collection.abc.sequence
+print(f"is '1,2,3' a sequence = {isinstance((1,2,3), abc.Sequence)}")
+print(f"is '1,2,3' a sequence = {isinstance((1,2,3), abc.MutableSequence)}")
 
+class Point2DSequence:
+    def __init__(self, min_length=None, max_length=None):
+        self.min_length = min_length
+        self.max_length = max_length
+
+    def __set_name__(self, cls, name):
+        self.name = name
+
+    def __set__(self, instance, value):
+        if not isinstance(value, abc.Sequence):
+            raise ValueError(f"{self.name} must be a sequence type")
+        if self.min_length is not None and len(value) < self.min_length:
+            raise ValueError(f"{self.name} must contain at least {self.min_length} elements")
+        if self.max_length is not None and len(value) > self.max_length:
+            raise ValueError(f"{self.name} must contain at least {self.max_length} elements")
+
+        for index, item in enumerate(value):
+            if not isinstance(item, Point2D):
+                raise ValueError(f"Item at index {index} is not a Point2D instance ")
+
+        instance.__dict__[self.name] = list(value)
+
+    def __get__(self, instance, owner_class):
+        if instance is None:
+            return self
+        else:
+            if self.name not in instance.__dict__:
+                instance.__dict__[self.name] = []
+            return instance.__dict__.get(self.name)
+
+
+class Polygon:
+    vertices = Point2DSequence(min_length=3)
+
+    def __init__(self, *vertices):
+        self.vertices = vertices
+
+
+try:
+    polygon = Polygon()
+except ValueError as ex:
+    print(ex)
+
+try:
+    polygon = Polygon(Point2D(-100, 0), Point2D(0, 1), Point2D(1, 0))
+except ValueError as ex:
+    print(ex)
+
+poly = Polygon(Point2D(0, 0), Point2D(0, 1), Point2D(1, 0))
+print(f" Vertices of Poly = {poly.vertices}")
+
+
+class PolygonAppend:
+    vertices = Point2DSequence(min_length=3)
+
+    def __init__(self, *vertices):
+        self.vertices = vertices
+
+    def append(self, pt):
+        if not isinstance(pt, Point2D):
+            raise ValueError('Can only append Point2D instances')
+            PolygonAppend.vertices
+            max_length = type(self).vertices.max_length
