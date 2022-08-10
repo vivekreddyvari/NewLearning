@@ -1,0 +1,13 @@
+/Library/Frameworks/Python.framework/Versions/3.10/bin/python3 "/Applications/PyCharm CE.app/Contents/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py" --target test_loaddata.py::TestLoadData
+Testing started at 16:37 ...
+Launching pytest with arguments test_loaddata.py::TestLoadData --no-header --no-summary -q in /Users/vivekreddyvari/opt/anaconda/NewLearning/FashionCloud/tests
+
+============================= test session starts ==============================
+collecting ... collected 2 items
+
+test_loaddata.py::TestLoadData::test_mapping PASSED                      [ 50%]
+test_loaddata.py::TestLoadData::test_combine_columns PASSED              [100%]
+
+============================== 2 passed in 0.02s ===============================
+
+Process finished with exit code 0
