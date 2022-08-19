@@ -49,7 +49,7 @@ To break the above code into simpler:
 """
 
 
-class  IntegerValue:
+class IntegerValue:
     def get(self):
         return self._value
 

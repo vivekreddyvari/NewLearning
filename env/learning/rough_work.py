@@ -1,3 +1,8 @@
+import os
+from pathlib import Path
+
+
+
 weekdays = {1: 'Mon',
             2: 'Tue',
             3: 'Wed',
@@ -38,3 +43,5 @@ def load_data() -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
     return (price_values, mapping_values)
 
 l = load_data()
+
+entries = os.scandir('')
