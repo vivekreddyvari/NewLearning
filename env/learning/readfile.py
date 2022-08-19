@@ -1,6 +1,7 @@
 #imports
 import csv
 import os
+import gzip
 from pathlib import Path
 
 
@@ -11,7 +12,6 @@ class ReadFile:
         Outputs: FileData and FileType
 
     """
-
     def __init__(self, file_name):
         self._file_name = file_name
         self.path_default = os.path.abspath('')
@@ -36,7 +36,6 @@ class ReadFile:
                 fil_name.append(obj_name)
         if self._file_name in fil_name:
             directory_of_file = self.path_default
-            print(directory_of_file, self._file_name)
         else:
             directory_of_file = self.file_searcher(dir_name, self._file_name)
 
@@ -83,10 +82,18 @@ class ReadFile:
             for name in names:
                 # name_of_file = self.file_directory() + '/' + name\
                 name_of_file = self.directory_of_file() + '/' + name
-                if Path(name).suffix == '.txt':
+                if Path(name).suffix == '.txt' and name == self._file_name:
                     with open(name_of_file, 'r') as f:
-                        data = f.read()
-                        return data
+                        data_txt = f.read()
+                        return data_txt
+                if Path(name).suffix == '.csv' and name == self._file_name:
+                    csv_data = []
+                    with open(name_of_file, newline="") as csvfile:
+                        csv_read = csv.DictReader(csvfile, delimiter=';')
+                        for row in csv_read:
+                            csv_data.append(row)
+                        return csv_data
+
         else:
             raise Exception(f'Type of `{file_type}` file not found')
 
@@ -98,13 +105,15 @@ class ReadFile:
 r = ReadFile('example.txt')
 # print(dir(r))
 print(r.read_file('.txt'))
+
 print(str(r))
-print(dir(r))
+
 print(r.file_types())
 
-csv_read_file = ReadFile('data.csv')
-print(csv_read_file.read_file('.csv'))
-print(str(csv_read_file))
+
+csv_read_pricat = ReadFile('pricat.csv')
+print(csv_read_pricat.read_file('.csv'))
+print(str(csv_read_pricat))
 
 
 
