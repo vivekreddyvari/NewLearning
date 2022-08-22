@@ -34,6 +34,15 @@ finally:
     for num, mod in enumerate(dir(sys)):
         print(f"Number {num} = Module `{mod}`")
     print(f"Version Information {sys.version_info}")
+    print(f"{print(dir(sys.version_info))}")
+    version_major = sys.version_info.major
+    version_minor = sys.version_info.minor
+    version_micro = sys.version_info.micro
+    version_releaselevel = sys.version_info.releaselevel
+
+    if version_major == 3 and version_minor >= 10:
+        print(f"{version_major}.{version_minor}.{version_micro}")
+
 
 # else:
     # print('something went wrong')
@@ -48,8 +57,7 @@ except IndexError:
 except LookupError:
     print(f"{LookupError} - Lookup Error")
 
-
-## Try and finally - mostly used in scenario
+# Try and finally - mostly used in scenario
 # like open the file in try block and close the file in finally block
 
 try:
@@ -90,5 +98,22 @@ if path.exists('example.txt') and not path.isdir('example.txt'):
     f.close()
 
 # Coding
+try:
+    raise ValueError('Custom Message')
+except ValueError as ex:
+    print(ex)
+
+
+def func_1():
+    raise ValueError('bad value')
+
+try:
+    func_1()
+except ValueError as ex:
+    print('Handling a value error', repr(ex))
+except IndexError as ex:
+    print('Handling an index error', repr(ex))
+
+    
 
 
