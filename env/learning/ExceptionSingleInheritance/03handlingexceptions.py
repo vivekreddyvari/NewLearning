@@ -1,4 +1,4 @@
-
+import json
 
 """ 
 Handling Exceptions using try:
@@ -115,5 +115,205 @@ except IndexError as ex:
     print('Handling an index error', repr(ex))
 
     
+try:
+    raise TypeError('error')
+except ValueError as ex:
+    print('handling value exception ', repr(ex))
+except Exception as ex:
+    print('handling exception ', repr(ex))
 
 
+# Finally Block
+"""
+Always run after code finish running in what ever the case it is...
+"""
+
+try:
+    raise ValueError()
+except ValueError:
+    print('handle error')
+finally:
+    print('running finally')
+
+"""
+try:
+    a.append[0]
+except ValueError or IndexError or NameError:
+    print('value error')
+else:
+    print('no exception')
+"""
+
+json_data = """{"Alex": {"age": 18}, "Bryan" : {"age": 21, "city": "London"}, "Guido" : {"age": "unknown"}}"""
+data = json.loads(json_data)
+
+print(data)
+
+
+class Person:
+    __slots__ = 'name', '_age'
+
+    def __init__(self, name):
+        self.name = name
+        self._age = None
+
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, value):
+        if isinstance(value, int) and value >= 0:
+            self._age = value
+        else:
+            raise ValueError('Invalid age')
+
+    def __repr__(self):
+        return f"Person((name={self.name}, age={self.age}))"
+
+persons = []
+
+for name, attributes in data.items():
+    try:
+        p = Person(name)
+        for attrib_name, attrib_value in attributes.items():
+            try:
+                setattr(p, attrib_name, attrib_value)
+            except AttributeError:
+                print(f"Ignoring Attribute: {name}.{attrib_name}={attrib_value}")
+    except ValueError as ex:
+        print(f"Data for Person({name}) contains an invalid attribute value: {ex}")
+    else:
+        persons.append(p)
+
+
+print(persons)
+print('ENd')
+print('\n\n\n')
+
+
+# distinct helper function
+# string to int - conversion
+def convert_int(val):
+    if not isinstance(val, int):
+        raise TypeError()
+    if val not in {0, 1}:
+        raise ValueError('Integer Values 0 or 1 only')
+    return bool(val)
+
+
+def convert_str(val):
+    if not isinstance(val, str):
+        raise TypeError()
+    # casefold for case sensitive
+    val = val.casefold()
+    if val in {'0', 'f', 'false'}:
+        return False
+    elif val in {'1', 't', 'true'}:
+        return True
+    else:
+        raise ValueError('Admissible string values are: T, F, True, False, 0, 1, ...')
+
+
+class ConversionError(Exception):
+    pass
+
+
+def make_bool(val):
+    try:
+        try:
+            b = convert_int(val)
+        except TypeError:
+            try:
+                b = convert_str(val)
+            except TypeError:
+                raise ConversionError(f'The type is inadmissible...')
+
+
+    except ValueError as ex:
+        raise ConversionError(f'the value {val} converted to a bool: {ex}')
+    else:
+        return b
+
+
+values = [True, 0, 'T', 'False', 10, 'ABC', 1.0]
+
+for value in values:
+    try:
+        result = make_bool(value)
+
+    except ConversionError as ex:
+        result = str(ex)
+
+    print(f" {value} = {result}")
+
+print('\n\n\n\n')
+
+
+def make_bool_ver_1(val):
+    if isinstance(val, int):
+        if val in {0, 1}:
+            return bool(val)
+        else:
+           raise ConversionError("Invalid Integer Value")
+
+    if isinstance(val, str):
+        if val.casefold() in {'1', 'true', 't'}:
+            return True
+        if val.casefold() in {'0', 'false', 'f'}:
+            return False
+        raise ConversionError('Invalid String Value')
+    raise ConversionError('Invalid Type')
+
+values = [True, 0, 'T', 'False', 10, 'ABC', 1.0]
+
+for value in values:
+    try:
+        result = make_bool_ver_1(value)
+
+    except ConversionError as ex:
+        result = str(ex)
+
+    print(f" {value} = {result}")
+
+
+def get_item_forgive_me(seq, idx, default=None):
+    try:
+        return seq[idx]
+    except (IndexError, TypeError, KeyError):
+        return default
+
+
+def get_item_ask_perm(seq, idx, default=None):
+    if hasattr(seq, '__getitem__'):
+        if isinstance(seq, dict):
+            return seq.get(idx, default)
+        elif isinstance(idx, int):
+            if idx < len(seq):
+                return seq[idx]
+
+    return default
+
+
+print(get_item_forgive_me([1,2,3], 10, 'Nope'))
+print(get_item_ask_perm([1,2,3], 10, 'Nope'))
+
+print(get_item_forgive_me({'a': 100}, 'a'))
+
+print(get_item_ask_perm({'a': 100}, 'a'))
+
+
+class ConstantSequence:
+    def __init__(self, val):
+        self.val = val
+    def __getitem__(self, idx):
+        return self.val
+
+seq = ConstantSequence(10)
+print(seq[0], seq[1])
+
+get_item_forgive_me(seq, 10, 'Nope')
+# get_item_ask_perm(seq, 10, 'Nope')
+
+
+print(get_item_forgive_me([1,2,3,4], slice(1,3)))

@@ -116,4 +116,6 @@ print(csv_read_pricat.read_file('.csv'))
 print(str(csv_read_pricat))
 
 
+print(csv_read_pricat.file_types())
+
 
