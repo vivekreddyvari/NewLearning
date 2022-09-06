@@ -1,0 +1,40 @@
+MetaProgramming:
+
+MetaProgramming is a programming technique in which computer program have the ability to treat other programs
+as data.
+
+It means that a program can be designed to read, generate, analyze or transform other programs, and even modify
+itself while running.
+
+-> Basic idea is we can use code to modify code
+-> Keep code DRY
+    -> Don't Repeat Yourself.
+
+-> requires 3.6
+
+Metaprogramming Techniques....
+-> decorators
+    use code to modify the behavior of another piece of code
+    -> We'll explore class decorator a bit where we decorate classes, not just functions
+    -> as well as decorator classes where we use classes to decorate
+
+-> descriptors
+    -> use code to essentially modify the behaviour of the dot(.) operator.
+
+Meta-classes:
+    -> how they are used in the creation of classes
+        - think of a metaclass as a class(type) factory
+    -> how we can use them to hook into the class creation cycle
+    -> We'll still stick to single Inheritance.
+        -> Meta-classes don't always play nicely with multiple inheritance.
+
+-> Superficially, metaclasses are not difficult to understand, but the details can be get complicated.
+-> know when to use a metaclass is not easy
+    -> unless you come across a problem where the use of metaclass is obvious, -> don't use them
+    -> make code harder to read
+    -> just because you have a new hammer, does not mean everything is a nail
+        -> beware of the solution in search of a problem syndrome
+
+    -> if you're writing a library/framework -> maybe use metaclasses
+    -> if you're writing a application, -> probably not
+
