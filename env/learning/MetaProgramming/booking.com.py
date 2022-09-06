@@ -32,7 +32,7 @@ def awardTopKHotels(positiveKeywords, negativeKeywords, hotelIds, reviews, k):
     for word in negativeKeywords.split(" "):
         words_negative.add(word.lower())
 
-    # Intantiate hotel scorings
+    # Instantiate hotel scoring
     hotel_scores = {}
 
     # lets give score based on the review
