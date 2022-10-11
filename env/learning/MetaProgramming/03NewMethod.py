@@ -116,3 +116,6 @@ def my_func(value):
         yield from range(value)
 
 print(list(my_func(5)))
+
+# talk
+

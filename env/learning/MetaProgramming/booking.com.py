@@ -149,3 +149,5 @@ def getShiftedString(s, leftShifts, rightShifts):
             s = right_Shift(s)
 
     return s
+
+
