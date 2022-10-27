@@ -1,0 +1,18 @@
+
+Integer Field:
+
+	-> Initialize (self, min, max)
+	-> __set_name__
+	-> __set__
+	-> __get__
+
+1. Supplier Exceptions
+    a. Not Manufactured anymore
+    b. Production delayed
+    c. Shipping delayed
+2. Checkout Exceptions
+    a. Inventory type exceptions
+        - out of stock
+    b. Pricing Exceptions
+        - Invalid Coupon Code
+        - Cannot stack coupons

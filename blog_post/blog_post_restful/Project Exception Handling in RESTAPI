@@ -1,0 +1,40 @@
+Project Exception Handling in RESTAPI
+
+Easy way to generate exception handling
+1. Raise consistant exception handling
+2. associated exception code
+3. associated default exception message
+4. ability for our user to easily list out all the possible exceptions in our app.
+
+RESTAPI exception handling:
+Using enumerations and 
+
+Functionality:
+-> Single ENumeration (App exception)
+exceptions have a name (key) and three associated values
+-> name (e.g. NotAnInteger)
+-> code (e.g. 100)
+-> Default message (Value is not an Integer)
+-> associated exceptin type (e.g. ValueError)
+
+
+LookUp by exception name (key) or code (value)
+AppException['NotAnInteger'] AppException(100)
+
+Method to raise an exception
+	AppException.Timeout.throw()
+
+ability to override default message when throwing exception
+	AppException.Timeout.throw('Timeout Connecting to DB')
+
+Tips:
+Enumeration members will be defined using a tuple containing three values.
+-> Code Exception type (class name). default message
+
+e.g. NotAnInteger = 100, ValueError, 'Value is not an Integer'
+
+Use the __new__ approach I showed 
+Make the value the error code
+Provide a addition property of message
+
+
